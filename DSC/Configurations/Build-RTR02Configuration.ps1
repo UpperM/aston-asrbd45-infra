@@ -47,7 +47,7 @@ Configuration Build-RTR02Configuration
                 netsh routing ip relay add dhcpserver 192.168.8.1
                 netsh routing ip relay add interface BOU-LAN
                 netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" protocol=icmpv4:8,any dir=in action=allow
-                Rename-Computer -NewName $VMName -Restart
+                Rename-Computer -NewName "RTR-02" -Restart
             }
         }
     }

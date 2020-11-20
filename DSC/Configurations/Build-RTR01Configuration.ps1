@@ -43,7 +43,7 @@ Configuration Build-RTR01Configuration
                 #netsh routing ip relay add dhcpserver 192.168.128.1
                 netsh routing ip relay add interface ARC-CLI
                 netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" protocol=icmpv4:8,any dir=in action=allow
-                Rename-Computer -NewName $VMName -Restart
+                Rename-Computer -NewName "RTR-01"-Restart
             }
         }
     }
@@ -56,6 +56,6 @@ Remove-Item -Path "$OutPutPath\$VMName.mof" -ErrorAction SilentlyContinue
 Remove-Item -Path "$MOF_PATH\$VMName.mof" -ErrorAction SilentlyContinue
 
 # Build new mof files
-Build-RTR01Configuration -OutputPath $OutPutPath
+Build-RTR01Configuration -VMName $VMName -OutputPath $OutPutPath
 Rename-Item -Path $OutPutPath\localhost.mof -NewName "$VMName.mof" -Force
 Move-Item -Path "$OutPutPath\$VMName.mof" -Destination $MOF_PATH

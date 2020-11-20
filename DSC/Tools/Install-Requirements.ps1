@@ -1,10 +1,5 @@
-
-
-
 $Modules = @(
-    'xHyper-V',
-    'xVMNetworkAdapter'
-
+    'xHyper-V'
 )
 
 

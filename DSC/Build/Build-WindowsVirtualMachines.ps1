@@ -63,7 +63,7 @@ configuration Build-VM
                 }
 
                 MSFT_xFileDirectory {
-                    SourcePath      = "$CONFIG_PATH\$VMName.mof"
+                    SourcePath      = "$MOF_PATH\$VMName.mof"
                     DestinationPath = "\Windows\System32\Configuration\pending.mof"
                     Type            = "File"
                     Ensure          = "Present"

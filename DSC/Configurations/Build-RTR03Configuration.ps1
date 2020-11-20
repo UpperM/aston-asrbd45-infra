@@ -47,7 +47,7 @@ Configuration Build-RTR03Configuration
                 netsh routing ip nat set interface Salle mode=full
                 netsh routing ip nat add interface WAN
                 netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" protocol=icmpv4:8,any dir=in action=allow
-                Rename-Computer -NewName $VMName -Restart
+                Rename-Computer -NewName "RTR-03" -Restart
             }
         }
     }
