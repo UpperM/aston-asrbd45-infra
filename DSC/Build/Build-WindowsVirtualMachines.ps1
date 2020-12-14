@@ -8,11 +8,9 @@ configuration Build-VM
         [System.string]$VMName,
         [System.String]$HyperHost = $env:COMPUTERNAME,
         $VMNetworkAdapter,
-        $StartupMemory = 1024MB,
-        $MaximumMemory = 2048MB
+        $StartupMemory = 512MB,
+        $MaximumMemory = 1024MB
     )
-
-    Write-Host $VHD_PATH -ForegroundColor gREEN
 
     Import-DscResource –ModuleName xHyper-V
     Import-DscResource –ModuleName PSDesiredStateConfiguration
@@ -111,72 +109,159 @@ configuration Build-VM
 }
 
 $VMs = @(
-    @{
-        VMName = "RTR-01"
-        VMNetworkAdapter = @(
-            @{
-                SwitchName = "ARC-SRV"
-                IPaddress = "192.168.8.254"
-                Subnet = "255.255.255.0"
-                DnsServer = "192.168.8.1"
-            },
-            @{
-                SwitchName = "ARC-CLI"
-                IPaddress = "192.168.12.254"
-                Subnet = "255.255.255.0"
-                DnsServer = "192.168.8.1"
-            },
-            @{
-                SwitchName = "WAN"
-                IPaddress = "192.168.255.8"
-                Subnet = "255.255.255.0"
-                DefaultGateway = "192.168.255.254"
-                DnsServer = "192.168.8.1"
-            }
-        )
-    },
-    @{
-        VMName = "RTR-02"
-        VMNetworkAdapter = @(
-            @{
-                SwitchName = "WAN"
-                IPaddress = "192.168.255.128"
-                Subnet = "255.255.255.0"
-                DnsServer = "192.168.8.1"
-            },
-            @{
-                SwitchName = "BOU-LAN"
-                IPaddress = "192.168.128.254"
-                Subnet = "255.255.255.0"
-                DnsServer = "192.168.8.1"
-            }
-        )
-    },
-    @{
-        VMName = "RTR-03"
-        VMNetworkAdapter = @(
-            @{
-                SwitchName = "WAN"
-                IPaddress = "192.168.255.254"
-                Subnet = "255.255.255.0"
-                DnsServer = "192.168.8.1"
-            },
-            @{
-                SwitchName = "Salle"
-            }
-        )
-    },
-    @{
-        VMName = "SRV-01"
-        VMNetworkAdapter = @(
-            @{
-                SwitchName = "ARC-SRV"
-                IPaddress = "192.168.8.1"
-                Subnet = "255.255.255.0"
-                DnsServer = "192.168.8.1"
-            }
-        )
-    }
+    $VMs = @(
+        @{
+            VMName = "RTR-01"
+            VMNetworkAdapter = @(
+                @{
+                    SwitchName = "ARC-SRV"
+                    IPaddress = "192.168.8.254"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                },
+                @{
+                    SwitchName = "ARC-CLI"
+                    IPaddress = "192.168.12.254"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                },
+                @{
+                    SwitchName = "WAN"
+                    IPaddress = "192.168.255.8"
+                    Subnet = "255.255.255.0"
+                    DefaultGateway = "192.168.255.254"
+                    DnsServer = "192.168.8.1"
+                }
+            )
+        },
+        @{
+            VMName = "RTR-02"
+            VMNetworkAdapter = @(
+                @{
+                    SwitchName = "WAN"
+                    IPaddress = "192.168.255.128"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                },
+                @{
+                    SwitchName = "BOU-LAN"
+                    IPaddress = "192.168.128.254"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                }
+            )
+        },
+        @{
+            VMName = "RTR-03"
+            VMNetworkAdapter = @(
+                @{
+                    SwitchName = "WAN"
+                    IPaddress = "192.168.255.254"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                },
+                @{
+                    SwitchName = "Salle"
+                }
+            )
+        },
+        @{
+            VMName = "SRV-01"
+            VMNetworkAdapter = @(
+                @{
+                    SwitchName = "ARC-SRV"
+                    IPaddress = "192.168.8.1"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                    DefaultGateway = "192.168.8.254"
+                }
+            )
+        },
+        @{
+            VMName = "SRV-02"
+            VMNetworkAdapter = @(
+                @{
+                    SwitchName = "ARC-SRV"
+                    IPaddress = "192.168.8.2"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                    DefaultGateway = "192.168.8.254"
+                }
+            )
+        },
+        @{
+            VMName = "RMS"
+            VMNetworkAdapter = @(
+                @{
+                    SwitchName = "ARC-SRV"
+                    IPaddress = "192.168.8.40"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                    DefaultGateway = "192.168.8.254"
+                }
+            )
+        },
+        @{
+            VMName = "FS"
+            VMNetworkAdapter = @(
+                @{
+                    SwitchName = "ARC-SRV"
+                    IPaddress = "192.168.8.25"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                    DefaultGateway = "192.168.8.254"
+                }
+            )
+        },
+        @{
+            VMName = "Root-CA"
+            VMNetworkAdapter = @(
+                @{
+                    SwitchName = "ARC-SRV"
+                    IPaddress = "192.168.8.51"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                    DefaultGateway = "192.168.8.254"
+                }
+            )
+        },
+        @{
+            VMName = "Issuing-CA"
+            VMNetworkAdapter = @(
+                @{
+                    SwitchName = "ARC-SRV"
+                    IPaddress = "192.168.8.52"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                    DefaultGateway = "192.168.8.254"
+                }
+            )
+        },
+        @{
+            VMName = "WEB"
+            VMNetworkAdapter = @(
+                @{
+                    SwitchName = "WAN"
+                    IPaddress = "192.168.255.100"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                    DefaultGateway = "192.168.255.254"
+                }
+            )
+        },
+        @{
+            VMName = "WEBAPP"
+            VMNetworkAdapter = @(
+                @{
+                    SwitchName = "WAN"
+                    IPaddress = "192.168.255.110"
+                    Subnet = "255.255.255.0"
+                    DnsServer = "192.168.8.1"
+                    DefaultGateway = "192.168.255.254"
+                }
+            )
+        }
+    )
 )
 
 foreach ($i in $VMs)

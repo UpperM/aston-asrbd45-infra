@@ -56,6 +56,6 @@ Remove-Item -Path "$OutPutPath\$VMName.mof" -ErrorAction SilentlyContinue
 Remove-Item -Path "$MOF_PATH\$VMName.mof" -ErrorAction SilentlyContinue
 
 # Build new mof files
-Build-RTR01Configuration -VMName $VMName -OutputPath $OutPutPath
+Build-RTR01Configuration -OutputPath $OutPutPath
 Rename-Item -Path $OutPutPath\localhost.mof -NewName "$VMName.mof" -Force
 Move-Item -Path "$OutPutPath\$VMName.mof" -Destination $MOF_PATH

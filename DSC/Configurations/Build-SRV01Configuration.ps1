@@ -11,7 +11,6 @@ Configuration Build-SRV01Configuration
 
     Node "localhost"
     {
-
         Script "Configuration" {
             GetScript = {
 
@@ -20,9 +19,38 @@ Configuration Build-SRV01Configuration
                 $false
             }
             SetScript = {
+                Install-WindowsFeature DNS -IncludeManagementTools
+                Install-WindowsFeature -Name DHCP -IncludeManagementTools
+                Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
+                
+                Import-Module ADDSDeployment
+            
+                [string]$DomainName         = "aston.local"
+                [string]$DomainNetbiosName  = "ASTON"
+                [string]$Password           = "Install!"
+                [string]$PathAD             = "C:\Windows"
 
+                #Configuration de l'installation
+                $Params = @{
+                    SafeModeAdministratorPassword = (ConvertTo-SecureString $Password -AsPlainText -Force)
+                    ForestMode                    = "WinThreshold"
+                    DomainMode                    = "WinThreshold"
+                    DomainName                    = $DomainName
+                    DomainNetbiosName             = $DomainNetbiosName
+                    DatabasePath                  = "$PathAD\NTDS"
+                    SysvolPath                    = "$PathAD\SYSVOL"
+                    LogPath                       = "$PathAD\NTDS"
+                    InstallDns                    = $true
+                    CreateDnsDelegation           = $false
+                    
+                    NoRebootOnCompletion          = $false
+                    Force                         = $true
+                }
+            
+                #Deploiement du domaine
+                Install-ADDSForest @Params
                 netsh advfirewall firewall add rule name="ICMP Allow incoming V4 echo request" protocol=icmpv4:8,any dir=in action=allow
-                Rename-Computer -NewName $VMName -Restart
+                Rename-Computer -NewName "SRV-01" -Restart
             }
         }
     }

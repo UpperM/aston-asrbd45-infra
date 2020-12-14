@@ -11,8 +11,14 @@ configuration Build-HyperVConfiguration
 
     node ("$env:COMPUTERNAME")
     {
-        # Appel du fournisseur de ressources
-        # Exemple : WindowsFeature, File
+
+        WindowsFeature HyperV {
+            Ensure = "present"
+            Name = "Hyper-V"
+            IncludeAllSubFeature = $true
+        
+        } 
+
         File VMsFolder
         {
             Type            = "Directory"
@@ -68,10 +74,17 @@ configuration Build-HyperVConfiguration
             Type = "Internal"
             Ensure = "Present"
         }
+        
+        xVMHost "HyperVHostPaths"
+        {
+            IsSingleInstance    = 'Yes'
+            VirtualHardDiskPath = "$VHD_PATH"
+            VirtualMachinePath  = "$VM_PATH"
+        }
     }
 }
 
 $OutPutPath = $MOF_PATH
-Remove-Item -Path "$OutPutPath\localhost.mof" -ErrorAction SilentlyContinue
+Remove-Item -Path "$OutPutPath\$env:COMPUTERNAME.mof" -ErrorAction SilentlyContinue
 Build-HyperVConfiguration -OutputPath $OutPutPath
 Start-DscConfiguration -Wait -Path $OutPutPath -Verbose
